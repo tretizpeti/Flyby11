@@ -13,3 +13,7 @@ This method is the same approach described in the official Windows documentation
 ![explorer_Syeco1726S](https://github.com/user-attachments/assets/2b012c6f-177a-4d70-8abf-c4cff84f3a48)
 
 _Flyby11 offers all the currently working methods to bypass the restrictions for installing Windows 11 24H2 on unsupported hardware. The internet is full of guides showing how to get around the TPM, Secure Boot, and processor requirements, but Flyby11 does all that automatically for you._
+
+
+Honestly, I wrote the tool in about an hour for a good friend. I'll drop the source code here later for anyone who's interested.
+
