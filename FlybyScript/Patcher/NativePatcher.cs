@@ -73,54 +73,48 @@ namespace FlybyScript
             }
         }
 
-        private async Task<string> MountISO()
+private async Task<string> MountISO()
+{
+    try
+    {
+ 
+        string isoFilePath = SelectISOFile();
+
+        if (!string.IsNullOrEmpty(isoFilePath))
         {
-            try
+            MessageBox.Show($"Selected ISO file: {isoFilePath}. Now mounting the ISO.", "ISO Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            _logger.Log($"Mounting ISO: {isoFilePath}...", System.Drawing.Color.Blue);
+
+            string mountCommand = $"Mount-DiskImage -ImagePath \"{isoFilePath}\"";
+            await ExecutePowerShellCommand(mountCommand);  // Run asynchronously for mounting
+
+            // After mounting, try to get the drive letter
+            string mountedDriveLetter = await GetMountedDriveLetter();
+
+            if (string.IsNullOrEmpty(mountedDriveLetter))
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog
-                {
-                    Title = "Select Windows 24H2 ISO File",
-                    Filter = "ISO Files (*.iso)|*.iso|All Files (*.*)|*.*",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer)
-                };
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string isoFilePath = openFileDialog.FileName;
-
-                    MessageBox.Show($"Selected ISO file: {isoFilePath}. Now mounting the ISO.", "ISO Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    _logger.Log($"Mounting ISO: {isoFilePath}...", System.Drawing.Color.Blue);
-
-                    string mountCommand = $"Mount-DiskImage -ImagePath \"{isoFilePath}\"";
-                    await ExecutePowerShellCommand(mountCommand);  // Run asynchronously for mounting
-
-                    // After mounting, try to get the drive letter
-                    string mountedDriveLetter = await GetMountedDriveLetter();
-
-                    if (string.IsNullOrEmpty(mountedDriveLetter))
-                    {
-                        _logger.Log("Failed to get mounted drive letter.", System.Drawing.Color.Crimson);
-                        return null;
-                    }
-                    else
-                    {
-                        _logger.Log($"ISO mounted successfully. Drive letter: {mountedDriveLetter}", System.Drawing.Color.Green);
-                        return mountedDriveLetter;  // Return the mounted drive letter
-                    }
-                }
-                else
-                {
-                    _logger.Log("No ISO file selected.", System.Drawing.Color.Black);
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log($"Error mounting ISO: {ex.Message}", System.Drawing.Color.Crimson);
+                _logger.Log("Failed to get mounted drive letter.", System.Drawing.Color.Crimson);
                 return null;
             }
+            else
+            {
+                _logger.Log($"ISO mounted successfully. Drive letter: {mountedDriveLetter}", System.Drawing.Color.Green);
+                return mountedDriveLetter;  // Return the mounted drive letter
+            }
         }
+        else
+        {
+            _logger.Log("No ISO file selected.", System.Drawing.Color.Black);
+            return null;
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.Log($"Error mounting ISO: {ex.Message}", System.Drawing.Color.Crimson);
+        return null;
+    }
+}
 
         private async Task RunSetup(string mountedDriveLetter)
         {
