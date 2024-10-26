@@ -1,4 +1,4 @@
-# Flyby11 (FlybyScript)
+# Flyby11 (FlybyScript) Windows 11 for All – No Specs, No Problem!
 Flyby11 is a simple patcher that removes the annoying restrictions preventing you from installing Windows 11 (24H2) on unsupported hardware. Got an old PC? No TPM, Secure Boot, or your processor isn't supported? Flyby11 lets you install Windows 11 24H2 anyway.
 No complicated steps. Just run the tool, and you'll be running Windows 11 on your outdated machine in no time. Think of it as sneaking through the back door without anyone noticing.
 
