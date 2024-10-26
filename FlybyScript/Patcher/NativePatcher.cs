@@ -77,17 +77,10 @@ namespace FlybyScript
         {
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog
-                {
-                    Title = "Select Windows 24H2 ISO File",
-                    Filter = "ISO Files (*.iso)|*.iso|All Files (*.*)|*.*",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer)
-                };
+                string isoFilePath = SelectISOFile();
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (!string.IsNullOrEmpty(isoFilePath))
                 {
-                    string isoFilePath = openFileDialog.FileName;
-
                     MessageBox.Show($"Selected ISO file: {isoFilePath}. Now mounting the ISO.", "ISO Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     _logger.Log($"Mounting ISO: {isoFilePath}...", System.Drawing.Color.Blue);
@@ -124,44 +117,55 @@ namespace FlybyScript
 
         private async Task RunSetup(string mountedDriveLetter)
         {
+            if (string.IsNullOrEmpty(mountedDriveLetter))
+            {
+                _logger.Log("No mounted drive found. Exiting.", System.Drawing.Color.Crimson);
+                return;
+            }
+
+            // Log the drive letter and build the sources folder path
+            string sourcesFolderPath = Path.Combine(mountedDriveLetter, "sources");
+            _logger.Log($"Mounted drive letter: {mountedDriveLetter}", System.Drawing.Color.Gray);
+            _logger.Log($"Checking Sources folder at: {sourcesFolderPath}", System.Drawing.Color.Gray);
+
+            // Check if Sources folder exists
+            if (!Directory.Exists(sourcesFolderPath))
+            {
+                _logger.Log($"Sources folder not found at {sourcesFolderPath}.", System.Drawing.Color.Crimson);
+                return;
+            }
+
+            await LaunchSetupFromSourcesFolder(sourcesFolderPath);
+        }
+
+        private async Task LaunchSetupFromSourcesFolder(string sourcesFolderPath)
+        {
+            var processInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(sourcesFolderPath, "setupprep.exe"),
+                Arguments = "/product server",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
             try
             {
-                // Check if the mounted drive is available
-                if (string.IsNullOrEmpty(mountedDriveLetter))
+                using (var process = Process.Start(processInfo))
                 {
-                    _logger.Log("No mounted drive found. Exiting.", System.Drawing.Color.Crimson);
-                    return;
+                    // Capture output and wait for exit
+                    string output = await process.StandardOutput.ReadToEndAsync();
+                    string error = await process.StandardError.ReadToEndAsync();
+                    await process.WaitForExitAsync();
+
+                    // Log output and errors if any
+                    if (!string.IsNullOrEmpty(output)) _logger.Log($"Output: {output}", System.Drawing.Color.Gray);
+                    if (!string.IsNullOrEmpty(error)) _logger.Log($"Error: {error}", System.Drawing.Color.Crimson);
                 }
 
-                // Log the drive letter
-                _logger.Log($"Mounted drive letter: {mountedDriveLetter}", System.Drawing.Color.Gray);
-
-                // Build the path to the Sources folder
-                string sourcesFolderPath = Path.Combine(mountedDriveLetter, "sources");
-
-                // Path correct?
-                _logger.Log($"Checking Sources folder at: {sourcesFolderPath}", System.Drawing.Color.Gray);
-
-                // Check if Sources folder exists
-                if (Directory.Exists(sourcesFolderPath))
-                {
-                    _logger.Log($"Found Sources folder at {sourcesFolderPath}. Opening CMD and running setupprep.exe.", System.Drawing.Color.Green);
-
-                    // Prepare the CMD command to open cmd, then run 'setupprep.exe /product server'
-                    string cmdCommand = $"/C \"cd /d {sourcesFolderPath} && start cmd /k setupprep.exe /product server\"";
-
-                    // Execute the CMD command, which will open a new CMD window
-                    ProcessStart(cmdCommand);
-
-                    MessageBox.Show("Follow the Windows Server Setup window now. You can close the command window and the Flyby11 app.",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-                }
-                else
-                {
-                    _logger.Log($"Sources folder not found at {sourcesFolderPath}.", System.Drawing.Color.Crimson);
-                }
+                MessageBox.Show("Follow the Windows Server Setup window now. You can close this message box and the FlybyScript.",
+                    "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -169,7 +173,6 @@ namespace FlybyScript
             }
         }
 
-        // btnMountRunSetup_Click: Run setup.exe from a mounted ISO on the fly
         public async Task RunSetupFromMountedISO()
         {
             // Choose an ISO file
@@ -178,6 +181,8 @@ namespace FlybyScript
 
             try
             {
+                _logger.Log($"Please wait...", System.Drawing.Color.Crimson);
+
                 // Mount the selected ISO
                 await ExecutePowerShellCommand($"Mount-DiskImage -ImagePath \"{isoFilePath}\"");
 
@@ -185,33 +190,26 @@ namespace FlybyScript
                 string mountedDriveLetter = await GetMountedDriveLetter();
                 if (string.IsNullOrEmpty(mountedDriveLetter))
                 {
-                    _logger.Log("Failed to get mounted drive letter.", Color.Crimson);
+                    _logger.Log("Failed to get mounted drive letter.", System.Drawing.Color.Crimson);
                     return;
                 }
 
-                // Check if setup.exe exists and start it
-                string setupPath = Path.Combine(mountedDriveLetter, "setup.exe");
-                if (File.Exists(setupPath))
+                _logger.Log($"Mounted drive letter: {mountedDriveLetter}", System.Drawing.Color.Gray);
+
+                // Define Sources folder path and check if it exists
+                string sourcesFolderPath = Path.Combine(mountedDriveLetter, "sources");
+                if (Directory.Exists(sourcesFolderPath))
                 {
-                    _logger.Log($"Found setup.exe at {setupPath}. Launching setup.", Color.Green);
-
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = setupPath,
-                        UseShellExecute = true,
-                        CreateNoWindow = false
-                    });
-
-                    MessageBox.Show("Windows Setup has started. Follow the on-screen instructions.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await LaunchSetupFromSourcesFolder(sourcesFolderPath);
                 }
                 else
                 {
-                    _logger.Log($"setup.exe not found at {setupPath}.", Color.Crimson);
+                    _logger.Log($"Sources folder not found at {sourcesFolderPath}.", System.Drawing.Color.Crimson);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Log($"Error running setup.exe: {ex.Message}", Color.Crimson);
+                _logger.Log($"Error mounting ISO or launching setup: {ex.Message}", System.Drawing.Color.Crimson);
             }
         }
 
@@ -328,6 +326,7 @@ namespace FlybyScript
                 return null;
             }
         }
+
         private string SelectISOFile()
         {
             using (var openFileDialog = new OpenFileDialog
@@ -340,6 +339,5 @@ namespace FlybyScript
                 return openFileDialog.ShowDialog() == DialogResult.OK ? openFileDialog.FileName : null;
             }
         }
-
     }
 }

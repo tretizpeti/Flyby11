@@ -7,7 +7,7 @@
     <ProjectGuid>{66DDC36A-9095-4053-941C-8829D44F5F20}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FlybyScript</RootNamespace>
-    <AssemblyName>FlybyScript</AssemblyName>
+    <AssemblyName>Flyby11</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -56,6 +56,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Experience\FeaturePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Experience\FileExplorerAds.cs" />
+    <Compile Include="Experience\FindMyDevice.cs" />
+    <Compile Include="Experience\FinishSetupAds.cs" />
+    <Compile Include="Experience\LockScreenAds.cs" />
+    <Compile Include="Experience\PersonalizedAds.cs" />
+    <Compile Include="Experience\PrivacyExperience.cs" />
+    <Compile Include="Experience\SettingsAds.cs" />
+    <Compile Include="Experience\StartmenuAds.cs" />
+    <Compile Include="Experience\TailoredExperiences.cs" />
+    <Compile Include="Experience\Telemetry.cs" />
+    <Compile Include="Experience\TipsAndSuggestions.cs" />
+    <Compile Include="Experience\WelcomeExperienceAds.cs" />
+    <Compile Include="Helper\Utils.cs" />
     <Compile Include="Helper\Views.cs" />
     <Compile Include="Patcher\ScriptPatcher.cs" />
     <Compile Include="Helper\Logger.cs" />
@@ -69,11 +85,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patcher\PSPatcher.cs" />
     <Compile Include="Patcher\NativePatcher.cs" />
+    <Compile Include="Experience\FeatureBase.cs" />
+    <Compile Include="Experience\FeatureNode.cs" />
+    <Compile Include="USBManagement.cs" />
     <Compile Include="Views\ExperienceView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\ExperienceView.Designer.cs">
       <DependentUpon>ExperienceView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MediaView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MediaView.Designer.cs">
+      <DependentUpon>MediaView.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -91,6 +116,9 @@
     </Compile>
     <EmbeddedResource Include="Views\ExperienceView.resx">
       <DependentUpon>ExperienceView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\MediaView.resx">
+      <DependentUpon>MediaView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />

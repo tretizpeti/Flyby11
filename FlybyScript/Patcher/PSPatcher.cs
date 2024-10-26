@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FlybyScript;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FlybyScript;
 
 public class PSPatcher
 {

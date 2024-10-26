@@ -24,6 +24,7 @@ namespace FlybyScript
 
             // Set the default view to the main panel
             SwitchView.DefaultView = panelMain;
+
         }
 
         private async void MainForm_Load(object sender, EventArgs e)
@@ -160,7 +161,7 @@ namespace FlybyScript
             btnTogglePatch.Enabled = true;
         }
 
-        private void treeSettings_MouseMove(object sender, MouseEventArgs e)
+        private void treeSettings_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode node = treeSettings.GetNodeAt(e.Location);
 
@@ -169,7 +170,7 @@ namespace FlybyScript
                 // Check if the node's Tag is the native "Method1"
                 if (node.Tag?.ToString() == "Method1")
                 {
-                    rtbDescription.Text = "Inplace Upgrade via Server Setup\nThis method leverages the Windows Server variant of the Windows setup, " +
+                    rtbDescription.Text = "(Current release: Windows 11 2024 Update l Version 24H2)\nThis method leverages the Windows Server variant of the Windows setup, " +
                         "which skips most hardware compatibility checks. It allows Windows 11 to be installed on unsupported PCs, " +
                         "bypassing the usual system requirements. Importantly, while the setup runs in server mode, " +
                         "it installs the standard Windows 11 (not the server version).\n\nHow it works:\n1. " +
@@ -210,10 +211,25 @@ namespace FlybyScript
             await patcher.RunSetupFromMountedISO();
         }
 
+        private void linkChangeExperience_Paint(object sender, PaintEventArgs e)
+        {
+            // Linkoption gains focus so trigger a vivid focus rectangle
+            ControlPaint.DrawFocusRectangle(e.Graphics, linkChangeExperience.ClientRectangle);
+        }
+
         private void linkChangeExperience_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ExperienceView exprienceView = new ExperienceView();
-            SwitchView.SetView(exprienceView, panelForm);
+            ExperienceView experienceView = new ExperienceView();
+            SwitchView.SetView(experienceView, panelForm);
         }
+
+        private void checkInstallationMedia_CheckedChanged(object sender, EventArgs e)
+        {
+            checkInstallationMedia.Checked = false;
+            MediaView installMediaView = new MediaView();
+            SwitchView.SetView(installMediaView, panelForm);
+        }
+
+    
     }
 }

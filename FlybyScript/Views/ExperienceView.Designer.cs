@@ -29,8 +29,14 @@
         private void InitializeComponent()
         {
             this.btnBack = new System.Windows.Forms.Button();
+            this.featurePanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.rtbDescription = new System.Windows.Forms.RichTextBox();
+            this.lblHeader = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnRevert = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.featurePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnBack
@@ -39,53 +45,136 @@
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.btnBack.FlatAppearance.BorderSize = 0;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Font = new System.Drawing.Font("Segoe MDL2 Assets", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnBack.Font = new System.Drawing.Font("Segoe MDL2 Assets", 14F, System.Drawing.FontStyle.Bold);
             this.btnBack.ForeColor = System.Drawing.Color.DarkGray;
             this.btnBack.Location = new System.Drawing.Point(3, 3);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(29, 25);
+            this.btnBack.Size = new System.Drawing.Size(34, 29);
             this.btnBack.TabIndex = 231;
             this.btnBack.Text = "...";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
+            // featurePanel
+            // 
+            this.featurePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.featurePanel.AutoScroll = true;
+            this.featurePanel.Controls.Add(this.rtbDescription);
+            this.featurePanel.Location = new System.Drawing.Point(69, 170);
+            this.featurePanel.Name = "featurePanel";
+            this.featurePanel.Size = new System.Drawing.Size(852, 365);
+            this.featurePanel.TabIndex = 232;
+            // 
+            // rtbDescription
+            // 
+            this.rtbDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbDescription.BackColor = System.Drawing.Color.Silver;
+            this.rtbDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbDescription.Location = new System.Drawing.Point(3, 3);
+            this.rtbDescription.Name = "rtbDescription";
+            this.rtbDescription.Size = new System.Drawing.Size(345, 55);
+            this.rtbDescription.TabIndex = 233;
+            this.rtbDescription.Text = "";
+            this.rtbDescription.Visible = false;
+            // 
+            // lblHeader
+            // 
+            this.lblHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblHeader.AutoEllipsis = true;
+            this.lblHeader.Font = new System.Drawing.Font("Segoe UI Variable Small Light", 21.25F);
+            this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
+            this.lblHeader.Location = new System.Drawing.Point(69, 22);
+            this.lblHeader.Name = "lblHeader";
+            this.lblHeader.Size = new System.Drawing.Size(771, 84);
+            this.lblHeader.TabIndex = 234;
+            this.lblHeader.Text = "Choose privacy settings for your device";
+            // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoEllipsis = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Variable Small Light", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
-            this.label1.Location = new System.Drawing.Point(131, 201);
+            this.label1.Font = new System.Drawing.Font("Segoe UI Variable Small Light", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(73, 66);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(780, 82);
-            this.label1.TabIndex = 232;
-            this.label1.Text = "This page is under development and will assist you in personalizing your installa" +
-    "tion.";
+            this.label1.Size = new System.Drawing.Size(837, 66);
+            this.label1.TabIndex = 235;
+            this.label1.Text = "Good news!\r\nWith these privacy settings, you\'re in control of what’s shared and s" +
+    "hown within Microsoft.\r\n\r\nTo accept, choose \"Accept and Apply.\" If you prefer de" +
+    "fault settings, select \"Decline.\"";
             // 
-            // linkLabel1
+            // btnRevert
             // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.AutoEllipsis = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Segoe UI Variable Small Light", 10.25F);
-            this.linkLabel1.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel1.Location = new System.Drawing.Point(137, 310);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(677, 19);
-            this.linkLabel1.TabIndex = 233;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "In the meantime, you can enhance this app with xd-AntiSpy plugins by placing them" +
-    " in the \'upgraider\' folder.";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.btnRevert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRevert.AutoEllipsis = true;
+            this.btnRevert.BackColor = System.Drawing.Color.White;
+            this.btnRevert.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRevert.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
+            this.btnRevert.FlatAppearance.BorderSize = 2;
+            this.btnRevert.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
+            this.btnRevert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRevert.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnRevert.Location = new System.Drawing.Point(473, 565);
+            this.btnRevert.Name = "btnRevert";
+            this.btnRevert.Size = new System.Drawing.Size(220, 40);
+            this.btnRevert.TabIndex = 238;
+            this.btnRevert.TabStop = false;
+            this.btnRevert.Text = "Decline";
+            this.btnRevert.UseVisualStyleBackColor = false;
+            this.btnRevert.Click += new System.EventHandler(this.btnRevert_Click);
+            // 
+            // btnApply
+            // 
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnApply.BackColor = System.Drawing.Color.White;
+            this.btnApply.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApply.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
+            this.btnApply.FlatAppearance.BorderSize = 2;
+            this.btnApply.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
+            this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApply.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnApply.Location = new System.Drawing.Point(699, 565);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(222, 40);
+            this.btnApply.TabIndex = 237;
+            this.btnApply.TabStop = false;
+            this.btnApply.Text = "Accept and apply";
+            this.btnApply.UseCompatibleTextRendering = true;
+            this.btnApply.UseVisualStyleBackColor = false;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoEllipsis = true;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Variable Small Semibol", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(84, 142);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(158, 16);
+            this.label2.TabIndex = 239;
+            this.label2.Text = "Last updated October 2024";
             // 
             // ExperienceView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.linkLabel1);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.btnRevert);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblHeader);
+            this.Controls.Add(this.featurePanel);
             this.Controls.Add(this.btnBack);
             this.Name = "ExperienceView";
-            this.Size = new System.Drawing.Size(1043, 484);
+            this.Size = new System.Drawing.Size(959, 631);
+            this.featurePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,7 +183,12 @@
         #endregion
 
         private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.FlowLayoutPanel featurePanel;
+        private System.Windows.Forms.RichTextBox rtbDescription;
+        private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button btnRevert;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Label label2;
     }
 }

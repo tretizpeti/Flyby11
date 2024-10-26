@@ -28,9 +28,7 @@ namespace FlybyScript
         private void LogMessage(string message, Color color)
         {
             rtbDescription.SelectionColor = color;
-
-            rtbDescription.AppendText($"{message}\n");
-
+            rtbDescription.AppendText($"{DateTime.Now:HH:mm:ss} - {message}\n");
             rtbDescription.ScrollToCaret();
         }
     }
