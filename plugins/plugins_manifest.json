@@ -7,5 +7,5 @@
     "Remove default apps.ps1": "This script will remove all preinstalled inbox apps using PowerShell.",
     "File Extensions Visibility.json": "This plugin shows or hides hidden file extensions in Windows Explorer.",
     "Clear Icon Cache.json": "This plugin clears the icon cache in Windows to resolve issues with icons displaying incorrectly.",
-    "Windows Rollback Timer.json": "This plugin adjusts the time window available to revert to a previous version of Windows 10 after an upgrade."    
+    "Windows Rollback Timer.json": "This plugin adjusts the time window available to revert to a previous version of Windows after an upgrade."    
 }
