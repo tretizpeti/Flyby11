@@ -57,4 +57,4 @@ foreach ($item in (Get-ChildItem "$env:WinDir\WinSxS\*onedrive*")) {
     Takeown-Folder $item.FullName
     Remove-Item -Recurse -Force $item.FullName
 }
-Write-Output "xd-AntiSpy can confirm the uninstallation of the OneDrive app."
+Write-Output "Flyby11 can confirm the uninstallation of the OneDrive app."
