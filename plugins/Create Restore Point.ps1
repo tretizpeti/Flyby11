@@ -9,7 +9,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Add-Type -AssemblyName System.Windows.Forms
 
 # Define the restore point description and type
-$description = "xd-AntiSpy Restore Point"
+$description = "Flyby11 Restore Point"
 $restorePointType = 12  # MODIFY_SETTINGS = 12
 
 # Function to create restore point with progress reporting
