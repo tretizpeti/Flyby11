@@ -27,5 +27,5 @@ foreach ($app in $allApps) {
 # Display final status
 if ($reinstalledCount -eq $totalApps) {
     Write-Host "All apps reinstalled successfully." -ForegroundColor Green
-    Write-Host "Winpilot and Clippy have reinstalled everything possible." -ForegroundColor Cyan
+    Write-Host "Flyby11 has reinstalled everything possible." -ForegroundColor Cyan
 }
