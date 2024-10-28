@@ -15,4 +15,4 @@ Stop-Process -Name explorer -Force
 Start-Process explorer
 
 # Show message box
-Show-MessageBox -message "Windows Explorer has been restarted successfully." -title "xd-AntiSpy"
+Show-MessageBox -message "Windows Explorer has been restarted successfully." -title "Flyby11"
