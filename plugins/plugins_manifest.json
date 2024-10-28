@@ -4,7 +4,7 @@
     "Create Restore Point.ps1": "Creates a system restore point to save your current system state.",
     "Uninstall OneDrive.ps1": "Completely removes OneDrive from your Windows system.",
     "Resore all built-in apps.ps1": "This will restore all preinstalled inbox apps of Microsoft.",
-    "Remove default apps.ps1": "This script will remove all preinstalled inbox apps using PowerShell. For a better alternative, consider using the PluginDebloater.dll",
+    "Remove default apps.ps1": "This script will remove all preinstalled inbox apps using PowerShell.",
     "File Extensions Visibility.json": "This feature shows or hides hidden file extensions in Windows Explorer.",
-	"Clear Icon Cache.json": "This feature clears the icon cache in Windows to resolve issues with icons displaying incorrectly."
+     "Clear Icon Cache.json": "This feature clears the icon cache in Windows to resolve issues with icons displaying incorrectly."
 }
