@@ -117,7 +117,7 @@
             this.btnRevert.FlatAppearance.BorderSize = 2;
             this.btnRevert.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
             this.btnRevert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRevert.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnRevert.Font = new System.Drawing.Font("Arial", 9.75F);
             this.btnRevert.Location = new System.Drawing.Point(473, 565);
             this.btnRevert.Name = "btnRevert";
             this.btnRevert.Size = new System.Drawing.Size(220, 40);
@@ -136,7 +136,7 @@
             this.btnApply.FlatAppearance.BorderSize = 2;
             this.btnApply.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnApply.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnApply.Font = new System.Drawing.Font("Arial", 9.75F);
             this.btnApply.Location = new System.Drawing.Point(699, 565);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(222, 40);

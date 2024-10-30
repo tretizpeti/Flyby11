@@ -66,10 +66,15 @@ namespace Views
             }
             else
             {
-                //MessageBox.Show("No removable drives found.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                comboBoxDriveLetters.Enabled =
-                comboBoxDrives.Enabled = false;
+                // MessageBox.Show("No removable drives found.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxDriveLetters.Enabled = comboBoxDrives.Enabled = false;
             }
+
+            // Initialize partition schemes
+            comboBoxPartitionScheme.Items.Clear();
+            comboBoxPartitionScheme.Items.Add("GPT");
+            comboBoxPartitionScheme.Items.Add("MBR");
+            comboBoxPartitionScheme.SelectedIndex = 0; // default to gpt
         }
 
         private async Task ShowDiskList()
@@ -139,10 +144,10 @@ namespace Views
             btnStart.Enabled = false; // Disable the Start button
 
             // Validate Disk Number
-            if (string.IsNullOrEmpty(comboBoxDrives.Text) || !int.TryParse(comboBoxDrives.Text, out _))
+            if (string.IsNullOrEmpty(comboBoxDrives.Text) || !int.TryParse(comboBoxDrives.Text, out int diskNumber))
             {
                 logger.Log("Please enter a valid Disk Number.", Color.Red);
-                btnStart.Enabled = true; // Re-enable the button
+                btnStart.Enabled = true;
                 return;
             }
 
@@ -154,21 +159,33 @@ namespace Views
                 return;
             }
 
-            string diskNumber = comboBoxDrives.Text.Trim(); // Get the disk number from the ComboBox
-            string driveLetter = comboBoxDriveLetters.SelectedItem.ToString().Trim(); // Get the selected drive letter
-
-            logger.Log($"Starting to format Disk {diskNumber} and copy to Drive {driveLetter}...", Color.Black);
+            // Get the selected drive letter and partition scheme
+            string driveLetter = comboBoxDriveLetters.SelectedItem.ToString().Trim();
+            string partitionScheme = comboBoxPartitionScheme.SelectedItem.ToString().Trim(); // Get the selected partition scheme
 
             try
             {
-                // Format the drive using the disk number
-                await usbManagement.FormatDriveAsync(diskNumber); // Pass the disk number
+                // Check if the selected drive is a USB stick
+                DriveInfo selectedDrive = DriveInfo.GetDrives()
+                                                   .FirstOrDefault(d => d.Name.StartsWith(driveLetter));
+
+                if (selectedDrive == null || selectedDrive.DriveType != DriveType.Removable)
+                {
+                    logger.Log("Selected drive is not a compatible USB stick. Only USB sticks are supported.", Color.Red);
+                    btnStart.Enabled = true;
+                    return;
+                }
+
+                logger.Log($"Starting to format Disk {diskNumber} ({driveLetter}) as {partitionScheme}...", Color.Black);
+
+                // Format the drive with the selected partition scheme
+                await usbManagement.FormatDriveAsync(diskNumber.ToString(), partitionScheme); // Pass the disk number and selected partition scheme
                 logger.Log($"Disk {diskNumber} formatted successfully.", Color.Black);
                 logger.Log($"Disk {diskNumber} is now bootable.", Color.Black);
 
                 // Copy ISO and create unattend.xml if checked
                 bool createUnattend = checkCreateUnattend.Checked;
-                await usbManagement.CopyISOWithUnattendAsync(driveLetter, selectedIsoPath, createUnattend); // Use the drive letter for copying
+                await usbManagement.CopyISOWithUnattendAsync(driveLetter, selectedIsoPath, createUnattend);
 
                 logger.Log("Process completed!", Color.Green);
             }
@@ -194,14 +211,37 @@ namespace Views
                     selectedIsoPath = openFileDialog.FileName;
                     logger.Log($"Selected ISO file: {selectedIsoPath}", Color.Black);
 
-                    checkCreateUnattend.Visible = true; // Show the checkbox to create unattend.xml
+                    ToggleIsoControls(true);
                 }
                 else
                 {
                     logger.Log("ISO file selection was cancelled.", Color.Red);
+                    ToggleIsoControls(false); // Disable ISO-related controls if selection is canceled
                 }
+
+                // MCT and Install Assistant buttons are always enabled
+                btnMCT.Enabled = true;
+                btnInstallAssistant.Enabled = true;
             }
         }
+
+        // Helper method to toggle ISO-related controls
+        private void ToggleIsoControls(bool isEnabled)
+        {
+            checkCreateUnattend.Visible = isEnabled;
+            comboBoxDrives.Enabled = isEnabled;
+            comboBoxDriveLetters.Enabled = isEnabled;
+            comboBoxPartitionScheme.Enabled = isEnabled;
+            lblDeviceIDInfo.Enabled = isEnabled;
+            lblDriveInfo.Enabled = isEnabled;
+            rtbLog.Enabled = isEnabled;
+            lblDriveLetterInfo.Enabled = isEnabled;
+            lblPartitionSchemeInfo.Enabled = isEnabled;
+            lblStatusInfo.Enabled = isEnabled;
+            linkShowDiskList.Enabled = isEnabled;
+            btnStart.Enabled = isEnabled;
+        }
+
 
         private void checkCreateUnattend_CheckedChanged(object sender, EventArgs e)
         {
@@ -235,12 +275,27 @@ namespace Views
 
         private async void btnMCT_Click(object sender, EventArgs e)
         {
-            await usbManagement.DownloadMediaCreationTool();
+            string mediaCreationToolUrl = "https://go.microsoft.com/fwlink/?linkid=2156295";
+            await usbManagement.DownloadMediaTool(mediaCreationToolUrl, "MediaCreationTool.exe");
+        }
+
+        private async void btnInstallAssistant_Click(object sender, EventArgs e)
+        {
+            string installAssistantUrl = "https://go.microsoft.com/fwlink/?linkid=2171764";
+            await usbManagement.DownloadMediaTool(installAssistantUrl, "Windows11InstallationAssistant.exe");
+        }
+
+        private async void linkPCHealthCheckApp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string installAssistantUrl = "https://github.com/rcmaehl/WhyNotWin11/releases/download/2.6.1.1/WhyNotWin11.exe";
+            await usbManagement.DownloadMediaTool(installAssistantUrl, "WhyNotWin11.exe");
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
             SwitchView.GoBack(this.Parent as Panel);
         }
+
+   
     }
 }

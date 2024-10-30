@@ -56,12 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Experience\ActivityHistory.cs" />
     <Compile Include="Experience\FeaturePanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Experience\FileExplorerAds.cs" />
-    <Compile Include="Experience\FindMyDevice.cs" />
     <Compile Include="Experience\FinishSetupAds.cs" />
+    <Compile Include="Experience\LocationTracking.cs" />
     <Compile Include="Experience\LockScreenAds.cs" />
     <Compile Include="Experience\PersonalizedAds.cs" />
     <Compile Include="Experience\PrivacyExperience.cs" />
@@ -80,6 +81,12 @@
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PluginsForm.Designer.cs">
+      <DependentUpon>PluginsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +110,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginsForm.resx">
+      <DependentUpon>PluginsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

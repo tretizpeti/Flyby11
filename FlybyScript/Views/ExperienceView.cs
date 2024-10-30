@@ -35,8 +35,9 @@ namespace Views
             // Initialize the list of features
             features = new List<FeatureBase>
             {
-                new FindMyDevice(logger),
                 new PrivacyExperience(logger),
+                new ActivityHistory(logger),
+                new LocationTracking(logger),
                 new Telemetry(logger),
                 new FileExplorerAds(logger),
                 new FinishSetupAds(logger),

@@ -25,6 +25,8 @@ namespace FlybyScript
             // Set the default view to the main panel
             SwitchView.DefaultView = panelMain;
 
+            // Subscribe to the AfterSelect event for importing plugins
+            treeSettings.AfterSelect += TreeSettings_AfterSelect;
         }
 
         private async void MainForm_Load(object sender, EventArgs e)
@@ -34,21 +36,57 @@ namespace FlybyScript
             treeSettings.Nodes.Add(nativePatcherNode);
 
             // Add Method 1 as a child of NativePatcher
-            TreeNode method1Node = new TreeNode("(Method 1) Inplace Upgrade via Server Setup");
-            method1Node.Tag = "Method1";
+            TreeNode method1Node = new TreeNode("(Method 1) Inplace Upgrade via Server Setup")
+            {
+                Tag = "Method1",
+                BackColor = Color.LightBlue
+            };
             nativePatcherNode.Nodes.Add(method1Node);
 
-            // Add ScriptPatcher parent node
+            // Load plugins
             await ScriptPatcher.LoadPlugins("upgraider", treeSettings.Nodes, logger);
 
-            // Add PSPatcher parent node (for Dependencies)
+            // Load PowerShell plugins
             PSPatcher = new PSPatcher();
             PSPatcher.LoadPowerShellPlugins(treeSettings);
+
+            // Add the Import node at the end
+            TreeNode importNode = new TreeNode("Import [...]")
+            {
+                NodeFont = new Font(treeSettings.Font, FontStyle.Italic),
+                Checked = false,
+                ForeColor = Color.Black
+            };
+            treeSettings.Nodes.Add(importNode);
 
             // Expand all nodes
             ExpandAllNodes(treeSettings.Nodes);
         }
 
+        private void TreeSettings_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Text == "Import [...]")
+            {
+                OpenPluginsForm();
+            }
+        }
+
+        private void OpenPluginsForm()
+        {
+            var pluginsForm = new PluginsForm(this);
+            pluginsForm.ShowDialog();
+        }
+
+        // Refresh the tree view
+        public void RefreshTreeView()
+        {
+            treeSettings.Nodes.Clear();
+
+            // Reload
+            MainForm_Load(this, EventArgs.Empty);
+        }
+
+        // Expand all nodes
         private void ExpandAllNodes(TreeNodeCollection nodes)
         {
             foreach (TreeNode node in nodes)
@@ -58,49 +96,12 @@ namespace FlybyScript
             }
         }
 
-        private void treeSettings_AfterCheck(object sender, TreeViewEventArgs e)
-        {
-            // Check if the node's checked status has changed
-            if (e.Node.Checked)
-            {
-                // Add the node and set its status to true (enabled)
-                pendingChanges[e.Node] = true;
-                e.Node.BackColor = Color.LightGreen; // Mark the node as active
-
-                // Check the type of node (either JSONPluginLoader/Patch or PowerShell script)
-                if (e.Node.Tag is ScriptPatcher jsonPlugin)
-                {
-                    logger.Log($"Patch activated: {jsonPlugin.PlugID}", Color.Black);
-                }
-                else if (e.Node.Tag is string psScriptPath)
-                {
-                    logger.Log($"PowerShell script activated: {Path.GetFileName(psScriptPath)}", Color.Black);
-                }
-            }
-            else
-            {
-                // Add the node and set its status to false (disabled)
-                pendingChanges[e.Node] = false;
-                e.Node.BackColor = Color.LightGray; // Mark the node as inactive
-
-                // Check the type of node again (either JSONPluginLoader or PowerShell script)
-                if (e.Node.Tag is ScriptPatcher jsonPlugin)
-                {
-                    logger.Log($"Patch deactivated: {jsonPlugin.PlugID}", Color.Crimson);
-                }
-                else if (e.Node.Tag is string psScriptPath)
-                {
-                    logger.Log($"PowerShell script deactivated: {Path.GetFileName(psScriptPath)}", Color.Crimson);
-                }
-            }
-        }
-
         private async void btnTogglePatch_Click(object sender, EventArgs e)
         {
             btnTogglePatch.Enabled = false;
             foreach (var entry in pendingChanges)
             {
-                var node = entry.Key; // So, The TreeNode
+                var node = entry.Key; // The TreeNode
                 bool shouldApply = entry.Value; // Whether this patch should be applied (true) or undone (false)
 
                 // Check if the entry is Method2 and if the patch is enabled
@@ -161,6 +162,49 @@ namespace FlybyScript
             btnTogglePatch.Enabled = true;
         }
 
+        private void treeSettings_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            // Check if the node's checked status has changed
+            if (e.Node.Checked)
+            {
+                // Add the node and set its status to true (enabled)
+                pendingChanges[e.Node] = true;
+                e.Node.BackColor = Color.LightGreen; // Mark the node as active
+
+                // Check the type of node (either JSONPluginLoader/Patch or PowerShell script)
+                if (e.Node.Tag is ScriptPatcher jsonPlugin)
+                {
+                    logger.Log($"Patch activated: {jsonPlugin.PlugID}", Color.Black);
+                }
+                else if (e.Node.Tag is string psScriptPath)
+                {
+                    logger.Log($"PowerShell script activated: {Path.GetFileName(psScriptPath)}", Color.Black);
+                }
+            }
+            else
+            {
+                // Add the node and set its status to false (disabled)
+                pendingChanges[e.Node] = false;
+                e.Node.BackColor = Color.LightGray; // Mark the node as inactive
+
+                // Check the type of node again (either JSONPluginLoader or PowerShell script)
+                if (e.Node.Tag is ScriptPatcher jsonPlugin)
+                {
+                    logger.Log($"Patch deactivated: {jsonPlugin.PlugID}", Color.Crimson);
+                }
+                else if (e.Node.Tag is string psScriptPath)
+                {
+                    logger.Log($"PowerShell script deactivated: {Path.GetFileName(psScriptPath)}", Color.Crimson);
+                }
+            }
+
+            // Synchronize parent-child node states, so when a child node is checked or unchecked, its parent node automatically reflects this change
+            if (e.Node.Parent != null)
+            {
+                e.Node.Parent.Checked = e.Node.Checked;
+            }
+        }
+
         private void treeSettings_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode node = treeSettings.GetNodeAt(e.Location);
@@ -186,15 +230,14 @@ namespace FlybyScript
                     string pluginInfo = $"ID: {plugin.PlugID}\nHow-to:\n{plugin.PlugInfo}";
                     rtbDescription.Text = pluginInfo;
                 }
-                else if (node.Tag is string psScriptPath)            // Handle PowerShell script description
+                else if (node.Tag is string psScriptPath)                // Handle PowerShell script description
                 {
                     rtbDescription.Clear();
                     string scriptInfo = $"PowerShell Script: {Path.GetFileName(psScriptPath)}\nPath: {psScriptPath}";
                     rtbDescription.Text = scriptInfo;
                 }
-                else
+                else                                                 // Clear description if no node is hovered
                 {
-                    // Clear description if no node is hovered
                     rtbDescription.Clear();
                 }
             }
@@ -213,7 +256,7 @@ namespace FlybyScript
 
         private void linkChangeExperience_Paint(object sender, PaintEventArgs e)
         {
-            // Linkoption gains focus so trigger a vivid focus rectangle
+            // Linkoption gains focus, so trigger a vivid focus rectangle
             ControlPaint.DrawFocusRectangle(e.Graphics, linkChangeExperience.ClientRectangle);
         }
 
@@ -229,7 +272,5 @@ namespace FlybyScript
             MediaView installMediaView = new MediaView();
             SwitchView.SetView(installMediaView, panelForm);
         }
-
-    
     }
 }

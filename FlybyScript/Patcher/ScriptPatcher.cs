@@ -171,7 +171,7 @@ namespace FlybyScript
             {
                 existingCategory = new TreeNode(category)
                 {
-                    BackColor = System.Drawing.Color.LightBlue,
+                   // BackColor = System.Drawing.Color.LightBlue,
                     ForeColor = System.Drawing.Color.Black
                 };
                 pluginCategory.Add(existingCategory);

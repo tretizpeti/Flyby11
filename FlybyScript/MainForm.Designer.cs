@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.treeSettings = new System.Windows.Forms.TreeView();
             this.rtbDescription = new System.Windows.Forms.RichTextBox();
             this.btnTogglePatch = new System.Windows.Forms.Button();
             this.linkGitHub = new System.Windows.Forms.LinkLabel();
@@ -38,37 +37,13 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.treeSettings = new System.Windows.Forms.TreeView();
             this.checkInstallationMedia = new System.Windows.Forms.CheckBox();
             this.linkChangeExperience = new System.Windows.Forms.LinkLabel();
             this.panelForm = new System.Windows.Forms.Panel();
             this.panelMain.SuspendLayout();
             this.panelForm.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // treeSettings
-            // 
-            this.treeSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.treeSettings.BackColor = System.Drawing.Color.White;
-            this.treeSettings.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeSettings.CheckBoxes = true;
-            this.treeSettings.Font = new System.Drawing.Font("Segoe UI Variable Text Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.treeSettings.ForeColor = System.Drawing.Color.Black;
-            this.treeSettings.FullRowSelect = true;
-            this.treeSettings.Indent = 20;
-            this.treeSettings.ItemHeight = 25;
-            this.treeSettings.Location = new System.Drawing.Point(36, 168);
-            this.treeSettings.Name = "treeSettings";
-            this.treeSettings.ShowLines = false;
-            this.treeSettings.ShowNodeToolTips = true;
-            this.treeSettings.ShowPlusMinus = false;
-            this.treeSettings.ShowRootLines = false;
-            this.treeSettings.Size = new System.Drawing.Size(865, 172);
-            this.treeSettings.TabIndex = 200;
-            this.treeSettings.TabStop = false;
-            this.treeSettings.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeSettings_AfterCheck);
-            this.treeSettings.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeSettings_NodeMouseClick);
             // 
             // rtbDescription
             // 
@@ -95,7 +70,7 @@
             this.btnTogglePatch.FlatAppearance.BorderSize = 2;
             this.btnTogglePatch.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
             this.btnTogglePatch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTogglePatch.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnTogglePatch.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTogglePatch.Location = new System.Drawing.Point(629, 484);
             this.btnTogglePatch.Name = "btnTogglePatch";
             this.btnTogglePatch.Size = new System.Drawing.Size(222, 40);
@@ -133,7 +108,7 @@
             this.btnMountRun.FlatAppearance.BorderSize = 2;
             this.btnMountRun.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
             this.btnMountRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMountRun.Font = new System.Drawing.Font("Segoe UI Variable Small", 10F);
+            this.btnMountRun.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMountRun.Location = new System.Drawing.Point(403, 484);
             this.btnMountRun.Name = "btnMountRun";
             this.btnMountRun.Size = new System.Drawing.Size(220, 40);
@@ -149,7 +124,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHeader.AutoEllipsis = true;
             this.lblHeader.Font = new System.Drawing.Font("Segoe UI Variable Small Light", 21.25F);
-            this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
+            this.lblHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(115)))), ((int)(((byte)(193)))));
             this.lblHeader.Location = new System.Drawing.Point(30, 38);
             this.lblHeader.Name = "lblHeader";
             this.lblHeader.Size = new System.Drawing.Size(780, 82);
@@ -184,20 +159,20 @@
             this.linkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(186)))), ((int)(((byte)(0)))));
             this.linkLabel2.Location = new System.Drawing.Point(233, 558);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(44, 16);
+            this.linkLabel2.Size = new System.Drawing.Size(51, 16);
             this.linkLabel2.TabIndex = 208;
             this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "0.13.81";
+            this.linkLabel2.Text = "0.14.107";
             // 
             // panelMain
             // 
+            this.panelMain.Controls.Add(this.treeSettings);
             this.panelMain.Controls.Add(this.checkInstallationMedia);
             this.panelMain.Controls.Add(this.linkLabel2);
             this.panelMain.Controls.Add(this.linkChangeExperience);
             this.panelMain.Controls.Add(this.lblHeader);
             this.panelMain.Controls.Add(this.linkLabel1);
             this.panelMain.Controls.Add(this.rtbDescription);
-            this.panelMain.Controls.Add(this.treeSettings);
             this.panelMain.Controls.Add(this.btnMountRun);
             this.panelMain.Controls.Add(this.btnTogglePatch);
             this.panelMain.Controls.Add(this.linkGitHub);
@@ -207,14 +182,36 @@
             this.panelMain.Size = new System.Drawing.Size(943, 592);
             this.panelMain.TabIndex = 209;
             // 
+            // treeSettings
+            // 
+            this.treeSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeSettings.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeSettings.CheckBoxes = true;
+            this.treeSettings.Font = new System.Drawing.Font("Segoe UI Variable Text Light", 11.25F);
+            this.treeSettings.FullRowSelect = true;
+            this.treeSettings.HotTracking = true;
+            this.treeSettings.Location = new System.Drawing.Point(36, 168);
+            this.treeSettings.Name = "treeSettings";
+            this.treeSettings.ShowLines = false;
+            this.treeSettings.ShowNodeToolTips = true;
+            this.treeSettings.ShowPlusMinus = false;
+            this.treeSettings.Size = new System.Drawing.Size(865, 172);
+            this.treeSettings.TabIndex = 210;
+            this.treeSettings.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeSettings_AfterCheck);
+            this.treeSettings.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeSettings_NodeMouseClick);
+            // 
             // checkInstallationMedia
             // 
             this.checkInstallationMedia.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkInstallationMedia.AutoSize = true;
+            this.checkInstallationMedia.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.checkInstallationMedia.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkInstallationMedia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(112)))), ((int)(((byte)(192)))));
-            this.checkInstallationMedia.Location = new System.Drawing.Point(34, 528);
+            this.checkInstallationMedia.Location = new System.Drawing.Point(34, 527);
             this.checkInstallationMedia.Name = "checkInstallationMedia";
-            this.checkInstallationMedia.Size = new System.Drawing.Size(245, 17);
+            this.checkInstallationMedia.Size = new System.Drawing.Size(249, 18);
             this.checkInstallationMedia.TabIndex = 209;
             this.checkInstallationMedia.Text = "I want to create Windows 11 installation media";
             this.checkInstallationMedia.UseVisualStyleBackColor = true;
@@ -255,7 +252,8 @@
             this.Controls.Add(this.panelForm);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Flyby11";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Flyby11 Upgrading Assistant";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
@@ -265,8 +263,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TreeView treeSettings;
         public System.Windows.Forms.RichTextBox rtbDescription;
         private System.Windows.Forms.Button btnTogglePatch;
         private System.Windows.Forms.LinkLabel linkGitHub;
@@ -278,6 +274,7 @@
         private System.Windows.Forms.LinkLabel linkChangeExperience;
         private System.Windows.Forms.Panel panelForm;
         private System.Windows.Forms.CheckBox checkInstallationMedia;
+        private System.Windows.Forms.TreeView treeSettings;
     }
 }
 

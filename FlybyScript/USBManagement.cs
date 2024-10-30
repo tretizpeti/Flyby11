@@ -73,7 +73,7 @@ namespace FlybyScript
         /// </summary>
         /// <param name="diskNumber">Diskpart Device ID</param>
         /// <returns></returns>
-        public async Task FormatDriveAsync(string diskNumber)
+        public async Task FormatDriveAsync(string diskNumber, string partitionScheme)
         {
             await Task.Run(() =>
             {
@@ -98,12 +98,20 @@ namespace FlybyScript
                                 UpdateStatusLabel(); // Updates to 1/5 - Format and Boot USB Drive
 
                                 // Send commands to DiskPart
-                                writer.WriteLine($"select disk {diskNumber}"); // Select the disk based on user input
+                                writer.WriteLine($"select disk {diskNumber}"); // Select the disk 
 
                                 UpdateProgress(10); // Update progress
                                 writer.WriteLine("clean"); // Clean the disk
-        
-                                writer.WriteLine("convert mbr"); // Convert to MBR
+
+                                // Check partition scheme selection
+                                if (partitionScheme == "GPT")
+                                {
+                                    writer.WriteLine("convert gpt"); // Convert to GPT
+                                }
+                                else if (partitionScheme == "MBR")
+                                {
+                                    writer.WriteLine("convert mbr"); // Convert to MBR
+                                }
 
                                 UpdateProgress(20);
                                 writer.WriteLine("create partition primary"); // Create a new partition
@@ -113,14 +121,13 @@ namespace FlybyScript
                                 UpdateProgress(60);
                                 writer.WriteLine("format fs=fat32 quick label=\"FlybyWin11\""); // Quick format to FAT32
 
-                                //  writer.WriteLine("assign letter=W"); // Assign drive letter
                                 writer.WriteLine("exit"); // Exit DiskPart
                                 UpdateProgress(100); // Final progress
                             }
                         }
 
                         string output = process.StandardOutput.ReadToEnd(); // Get the output from DiskPart
-                        process.WaitForExit(); // Wait for the process to exit
+                        process.WaitForExit();
                         _logger.Log($"Formatting completed: {output}", Color.Black);
                     }
                 }
@@ -130,6 +137,7 @@ namespace FlybyScript
                 }
             });
         }
+
 
         /// <summary>
         /// Copies the contents of the specified ISO file to the USB drive using Robocopy.
@@ -287,29 +295,27 @@ namespace FlybyScript
         }
 
         /// <summary>
-        /// Downloads the Microsoft Media Creation Tool from https://go.microsoft.com/fwlink/?linkid=2156295
+        /// Downloads a specified tool (Media Creation Tool or Installation Assistant) from a provided URL.
         /// </summary>
-        /// <param name="downloadUrl">The URL of the Media Creation Tool.</param>
+        /// <param name="downloadUrl">The URL of the tool to download.</param>
+        /// <param name="fileName">The name of the file to save.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task DownloadMediaCreationTool()
+        public async Task DownloadMediaTool(string downloadUrl, string fileName)
         {
-            string downloadUrl = "https://go.microsoft.com/fwlink/?linkid=2156295";
-
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "Executable Files (*.exe)|*.exe";
-                saveFileDialog.Title = "Save Media Creation Tool";
-                saveFileDialog.FileName = "MediaCreationTool.exe"; 
+                saveFileDialog.Title = $"Save {fileName}";
+                saveFileDialog.FileName = fileName;
 
-         
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string destinationPath = saveFileDialog.FileName;
 
                     try
                     {
-                        _logger.Log("Preparing to download Media Creation Tool...", Color.Black);
-                        _logger.Log("Download may take some time, please wait...", Color.Orange);
+                        _logger.Log($"Preparing to download {fileName}...", Color.Black);
+                        _logger.Log("Download may take some time, please wait...", Color.RoyalBlue);
 
                         var response = await httpClient.GetAsync(downloadUrl);
                         response.EnsureSuccessStatusCode();
@@ -319,27 +325,28 @@ namespace FlybyScript
                             await response.Content.CopyToAsync(fileStream);
                         }
 
-                        _logger.Log("Download completed successfully!", Color.Green);
+                        _logger.Log($"{fileName} download completed successfully!", Color.Green);
 
-                        // Start the downloaded Media Creation Tool
-                        _logger.Log("Starting Media Creation Tool...", Color.Black);
+                        // Start the downloaded tool
+                        _logger.Log($"Starting {fileName}...", Color.Black);
                         Process.Start(new ProcessStartInfo
                         {
                             FileName = destinationPath,
-                            UseShellExecute = true //  run .exe files
+                            UseShellExecute = true // To run .exe files
                         });
                     }
                     catch (Exception ex)
                     {
-                        _logger.Log($"An error occurred while downloading: {ex.Message}", Color.Red);
+                        _logger.Log($"An error occurred while downloading {fileName}: {ex.Message}", Color.Red);
                     }
                 }
                 else
                 {
-                    _logger.Log("Download canceled by user.", Color.Red);
+                    _logger.Log($"{fileName} download canceled by user.", Color.Red);
                 }
             }
         }
+
 
         /// <summary>
         /// Calculates progress based on Robocopy output

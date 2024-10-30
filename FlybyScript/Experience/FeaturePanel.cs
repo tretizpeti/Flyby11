@@ -87,7 +87,7 @@ namespace FlybyScript
         {
             return new Label
             {
-                Text = feature.CheckFeature() ? "Feature Enabled" : "Feature Disabled",
+                Text = feature.CheckFeature() ? "Accepted" : "Declined",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Italic),
                 ForeColor = Color.Gray,
@@ -124,7 +124,7 @@ namespace FlybyScript
                     if (success)
                     {
                         logger.Log($"{feature.ID()} enabled", Color.Green);
-                        statusLabel.Text = "Feature Enabled"; // Update status label
+                        statusLabel.Text = "Accepted"; // Update status label
                     }
                 }
                 else
@@ -133,7 +133,7 @@ namespace FlybyScript
                     if (success)
                     {
                         logger.Log($"{feature.ID()} disabled", Color.Red);
-                        statusLabel.Text = "Feature Disabled";
+                        statusLabel.Text = "Declined";
                     }
                 }
             }
